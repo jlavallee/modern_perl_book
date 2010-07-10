@@ -80,11 +80,11 @@ Perl's looping constructs also set C<$_>, such as C<for> iterating over a list:
 
 =begin programlisting
 
-    say "#B<$_>" for 1 .. 10;
+    say $_ for 1 .. 10;
 
     for (1 .. 10)
     {
-        say "#B<$_>";
+        say $_;
     }
 
 =end programlisting
