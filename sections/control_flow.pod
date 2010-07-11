@@ -898,7 +898,7 @@ implement a silly file parser that joins lines which end with a backslash with:
     while (my $line = <$fh>)
     {
         chomp $line;
-        if ($line =~ s{(.*)\\$}{$1})
+        if ($line =~ s{\\$}{})
         {
             $line .= <$fh>;
             redo;
