@@ -222,6 +222,23 @@ may not change the order in which the block types appear:
 You may also use the C<elsif> block with an C<unless> chain, but the resulting
 code may be unclear.  There is no C<elseunless>.
 
+There is no C<else if> construct; this is a syntax error:
+
+=begin programlisting
+
+    if ($name eq 'Rick')
+    {
+        say 'Hi, cousin!';
+    }
+
+    # warning; syntax error
+    else if ($name eq 'Kristen')
+    {
+        say 'Hi, cousin-in-law!';
+    }
+
+=end programlisting
+
 =head3 The Ternary Conditional Operator
 
 X<ternary conditional>
@@ -518,6 +535,19 @@ You cannot use aliasing to modify I<constant> values, however:
 
 ... as this will throw an exception about modification of read-only values.
 There's little point in doing so anyhow.
+
+You may occasionally see the use of C<for> with a single scalar variable to
+alias C<$_> to the variable:
+
+=begin programlisting
+
+    for ($user_input)
+    {
+        s/(\w)/\\$1/g;  # escape non-word characters
+        s/^\s*|\s$/g;   # trim whitespace
+    }
+
+=end programlisting
 
 =head3 Iteration and Scoping
 
@@ -942,22 +972,25 @@ functions for clarity.
 
 X<continue>
 
-The rarely used C<continue> construct may be used with a C<while>, C<until> or 
-C<foreach> loop.  It behaves like the third subexpression of a C<for> loop -- 
-it is evaluated for each iteration of the loop, even when a loop iteration is 
-exited with a C<next>.  It can be used to increment a loop variable:
+The C<continue> construct behaves like the third subexpression of a C<for>
+loop; Perl executes its block for each iteration of the loop, even when you
+exit an iteration with C<next>.  You may use it with may be used with a
+C<while>, C<until>, C<with>, or C<for> loop.  Examples of C<continue> are rare,
+but it's useful any time you want to guarantee that something occurs for every
+iteration of the loop regardless of how that iteration ends:
 
 =begin programlisting
 
-    while($i < 10 ){
+    while ($i < 10 )
+    {
         next unless $i % 2;
         say $i;
-    }continue{
-        say "continuing...";
+    }
+    continue
+    {
+        say 'Continuing...';
         $i++;
     }
-
-C<continue> can also be used with in a C<when> block, see below.
 
 =end programlisting
 
@@ -1011,8 +1044,11 @@ modification:
 
 X<when>
 
+X<topicalization>
+X<topicalize>
+
 By itself, this feature may seem less than useful.  In combination with
-C<when>, it is very useful.  Use C<given> to topicalize a value.  Within the
+C<when>, it is very useful.  Use C<given> to I<topicalize> a value.  Within the
 associated block, multiple C<when> statements match the topic against
 expressions using I<smart-match> semantics.  Thus you might code a Rock, Paper,
 Scissors game:
